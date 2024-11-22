@@ -7,7 +7,7 @@ SRC_DIR=src
 all: main
 
 main: always
-	$(CC) -g $(SRC_DIR)/main.c -o $(BUILD_DIR)/main
+	$(CC) -g $(SRC_DIR)/main.c -o $(BUILD_DIR)/main -lglut -lGL -lGLU -lXi -lXmu
 	chmod +x $(BUILD_DIR)/main
 always:
 	mkdir -p $(BUILD_DIR)
