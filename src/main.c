@@ -90,7 +90,7 @@ void Draw() {
 			Vertices[7]
 			);
 
-	glRotatef(RT,1,1,0);
+	glRotatef(RT,1,0,1);
 	glutSwapBuffers();
 }
 
