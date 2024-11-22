@@ -13,23 +13,85 @@
 #define true 1;
 #define false 0;
 
-void ColourInit() {
-	glClearColor(0,0,0,1);
-	glColor3f(0,1,0);
+GLfloat	RT = 0;
+
+void Spin() {
+	RT = RT + 0.005;
+	if(RT > 360) RT = 0;
+	glutPostRedisplay();
 }
 
-void Draw()
-{
-	glClear(GL_COLOR_BUFFER_BIT);
+void Init() { //this function sets the colours
+	glClearColor(0,0,0,1);
+	glColor3f(0,1,0);
+	glEnable(GL_DEPTH_TEST);
+}
 
-	glBegin(GL_LINE_LOOP);	//use GL_POLYGON for solid object, GL_LINE_LOOP for wireframe and GL_POINTS for points
-		glVertex2f(-0.5,0.5);
-		glVertex2f(0.5,0.5);
-		glVertex2f(0.5,-0.5);
-		glVertex2f(-0.5,-0.5);
+void Face(GLfloat A[],GLfloat B[],GLfloat C[],GLfloat D[]) {
+	glBegin(GL_POLYGON);	//use GL_POLYGON for solid object, GL_LINE_LOOP for wireframe and GL_POINTS for points
+		glVertex3fv(A);
+		glVertex3fv(B);
+		glVertex3fv(C);
+		glVertex3fv(D);
 	glEnd();
+	}
 
-	glFlush();
+void Cube(	GLfloat V0[],
+			GLfloat V1[],
+			GLfloat V2[],
+			GLfloat V3[],
+			GLfloat V4[],
+			GLfloat V5[],
+			GLfloat V6[],
+			GLfloat V7[]
+			)
+{ //Void Cube begins
+	glColor3f(1,0,0); //set colour to red
+	Face(V0,V1,V2,V3);
+	
+	glColor3f(0,0,1); //set colour to Blue
+	Face(V0,V3,V7,V4);
+	
+	glColor3f(0,1,0); //set colour to green
+	Face(V4,V5,V6,V7);
+
+	glColor3f(1,0,1); //set colour to purple
+	Face(V1,V2,V6,V5);
+
+	glColor3f(1,1,0); //set colour to yellow
+	Face(V0,V1,V5,V4);
+
+	glColor3f(0,1,1); //set colour to teal
+	Face(V3,V2,V6,V7);
+}
+
+
+
+void Draw() {
+	GLfloat Vertices[8][3] = {
+								{-0.5,0.5,0.5},	
+								{0.5,0.5,0.5},	
+								{0.5,-0.5,0.5},	
+								{-0.5,-0.5,0.5}
+								,
+								{-0.5,0.5,-0.5},	
+								{0.5,0.5,-0.5},	
+								{0.5,-0.5,-0.5},	
+								{-0.5,-0.5,-0.5},	
+							 };
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	Cube(	Vertices[0],
+			Vertices[1],
+			Vertices[2],
+			Vertices[3],
+			Vertices[4],
+			Vertices[5],
+			Vertices[6],
+			Vertices[7]
+			);
+
+	glRotatef(RT,1,1,0);
+	glutSwapBuffers();
 }
 
 int main(int argC, char *argV[])
@@ -37,11 +99,13 @@ int main(int argC, char *argV[])
     glutInit(&argC,argV);
 
 	//glutInitWindowPosition(0,0); //Readd this later (TM)
-	glutInitWindowSize(800,600);
-	glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);
-	glutCreateWindow("OpenGL Test");
-	ColourInit();	
+	glutInitWindowSize(512,512); //window size
+	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH); //display mode
+	glutCreateWindow("OpenGL Test"); //make window
+	Init();	
+	
 	glutDisplayFunc(Draw);
+	glutIdleFunc(Spin); //calls spin when idle
 	glutMainLoop();
     return true;
 }
