@@ -90,7 +90,7 @@ void Draw() {
 			Vertices[7]
 			);
 
-	glRotatef(RT,1,0,1);
+	glRotatef(RT,1,.5,.5);
 	glutSwapBuffers();
 }
 
@@ -101,7 +101,7 @@ int main(int argC, char *argV[])
 	//glutInitWindowPosition(0,0); //Readd this later (TM)
 	glutInitWindowSize(512,512); //window size
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH); //display mode
-	glutCreateWindow("OpenGL Test"); //make window
+	glutCreateWindow("OpenGL C"); //make window
 	Init();	
 	
 	glutDisplayFunc(Draw);
