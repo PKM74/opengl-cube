@@ -8,10 +8,12 @@
 #include <stdint.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
+#include <string.h>
 
 //Definitions and Vars
 #define true 1;
 #define false 0;
+int GLPolyMode = GL_POLYGON;
 
 GLfloat	RT = 0;
 
@@ -28,7 +30,7 @@ void Init() { //this function sets the colours
 }
 
 void Face(GLfloat A[],GLfloat B[],GLfloat C[],GLfloat D[]) {
-	glBegin(GL_POLYGON);	//use GL_POLYGON for solid object, GL_LINE_LOOP for wireframe and GL_POINTS for points
+	glBegin(GLPolyMode);	//use GL_POLYGON for solid object, GL_LINE_LOOP for wireframe and GL_POINTS for points
 		glVertex3fv(A);
 		glVertex3fv(B);
 		glVertex3fv(C);
@@ -96,14 +98,30 @@ void Draw() {
 
 int main(int argC, char *argV[])
 {
-    glutInit(&argC,argV);
 
+    glutInit(&argC,argV);
+	if (argC > 1) {
+	    for (int i = 1; i < argC; i++) {
+	        if (strcmp(argV[i], "-v") == 0) {
+	            printf("OpenGL Spinning Cube Demo Version: 1.1\n");
+	            return true;
+	        } else if (strcmp(argV[i], "-h") == 0) {
+	            printf("Usage: cube [-v] [-h] [-w]\n");
+	            return true;
+	            } else if (strcmp(argV[i], "-w") == 0) {
+	                printf("Wireframe Mode Enabled\n");
+	                GLPolyMode = GL_LINE_LOOP;
+	        } else {
+	            printf("Unknown option: %s\n", argV[i]);
+	            return false;
+	        }
+	    }
+	}
 	//glutInitWindowPosition(0,0); //Readd this later (TM)
 	glutInitWindowSize(512,512); //window size
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH); //display mode
-	glutCreateWindow("OpenGL C"); //make window
+	glutCreateWindow("OpenGL Spinning Cube"); //make window
 	Init();	
-	
 	glutDisplayFunc(Draw);
 	glutIdleFunc(Spin); //calls spin when idle
 	glutMainLoop();

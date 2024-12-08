@@ -9,3 +9,7 @@ I already knew how to use GLUT, never bothered with GLFW plus its impossible to 
 Resources for GLFW and C, all of them use C++
 ## Why C?
 It the programming lang im the best in, by far
+## Command Flags
+- [-w] -> Wireframe Mode
+- [-v] -> Version
+- [-h] -> Help
